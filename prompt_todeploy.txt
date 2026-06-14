@@ -1,0 +1,187 @@
+Tôi gửi kèm:
+
+1. File ZIP chứa source code dự án.
+2. File PDF hướng dẫn deploy mẫu.
+
+Yêu cầu:
+
+BƯỚC 1 - PHÂN TÍCH TOÀN BỘ SOURCE CODE
+
+* Giải nén và đọc toàn bộ project.
+* Xác định:
+
+  * Frontend đang dùng công nghệ gì.
+  * Backend đang dùng công nghệ gì.
+  * Có Express server hay không.
+  * Có Firebase hay không.
+  * Có Cloudinary hay không.
+  * Có API bên thứ ba hay không.
+  * Có hardcode localhost hay không.
+  * Có file .env hay không.
+  * Có vấn đề khiến deploy Vercel thất bại hay không.
+
+Xuất báo cáo:
+
+# Kiến trúc dự án
+
+* Frontend:
+* Backend:
+* Database:
+* Authentication:
+* API:
+* Storage:
+* Hosting hiện tại:
+
+BƯỚC 2 - TÌM TOÀN BỘ LỖI DEPLOY
+
+Quét toàn bộ source code.
+
+Liệt kê theo dạng:
+
+FILE:
+ĐƯỜNG DẪN:
+
+DÒNG HOẶC ĐOẠN CODE:
+
+VẤN ĐỀ:
+
+NGUYÊN NHÂN:
+
+CÁCH SỬA:
+
+CODE MỚI:
+
+Không được mô tả chung chung.
+
+Phải chỉ rõ từng file cần sửa.
+
+BƯỚC 3 - TẠO CHECKLIST CHỈNH SỬA
+
+Xuất bảng:
+
+| File | Việc cần sửa | Mức độ |
+| ---- | ------------ | ------ |
+
+Ví dụ:
+
+Client/main.js
+
+* Bỏ localhost
+* Chuyển sang API cùng domain
+
+Server/index.js
+
+* Chuyển route sang Vercel Function
+
+...
+
+BƯỚC 4 - HƯỚNG DẪN CHỈNH TỪNG FILE
+
+Với mỗi file cần sửa:
+
+1. In nguyên đoạn code cũ.
+2. In đoạn code mới.
+3. Giải thích lý do.
+
+Không được viết tắt.
+
+BƯỚC 5 - CHUYỂN DỰ ÁN THÀNH DẠNG DEPLOY ĐƯỢC TRÊN VERCEL
+
+Kiểm tra:
+
+* app.listen()
+* localhost
+* CORS
+* Express server
+* API routes
+* ảnh tĩnh
+* environment variables
+* build settings
+
+Nếu cần:
+
+* tạo thư mục api/
+* tạo vercel.json
+* sửa package.json
+
+Hãy viết đầy đủ nội dung các file mới cần tạo.
+
+BƯỚC 6 - KIỂM TRA CẤU TRÚC CUỐI CÙNG
+
+In ra cây thư mục sau khi sửa:
+
+project/
+├── api/
+├── public/
+├── client/
+├── package.json
+├── vercel.json
+└── ...
+
+BƯỚC 7 - HƯỚNG DẪN ĐẨY LÊN GITHUB
+
+Giả sử người dùng chưa biết Git.
+
+Hướng dẫn từng bước:
+
+* tạo repo GitHub
+* git init
+* git add .
+* git commit
+* git remote add origin
+* git push
+
+Giải thích từng lệnh.
+
+BƯỚC 8 - HƯỚNG DẪN DEPLOY VERCEL
+
+Từng bước:
+
+1. Import Git Repository
+2. Chọn repo
+3. Framework Preset
+4. Root Directory
+5. Build Command
+6. Output Directory
+7. Environment Variables
+8. Deploy
+
+Nếu dự án cần cấu hình đặc biệt, ghi rõ.
+
+BƯỚC 9 - CHECKLIST TEST SAU DEPLOY
+
+Liệt kê:
+
+□ Trang chủ hoạt động
+
+□ Ảnh hiển thị
+
+□ Đăng nhập hoạt động
+
+□ Đăng ký hoạt động
+
+□ API trả dữ liệu
+
+□ Không còn localhost
+
+□ Không lỗi CORS
+
+□ Không lỗi build
+
+□ Không lỗi console
+
+chỉnh link nào localhost thì dể gì do || localhost...
+
+BƯỚC 10 - KẾT LUẬN
+
+Trả lời rõ:
+
+1. Có deploy được lên Vercel không?
+2. Nếu chưa, cần sửa những gì?
+3. Mức độ khó từ 1-10.
+4. Ước lượng thời gian sửa.
+5. Rủi ro còn lại.
+
+Không được trả lời chung chung.
+
+Phải chỉ rõ tên file, đoạn code và cách sửa cụ thể.

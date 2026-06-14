@@ -1,0 +1,10 @@
+{
+  "name": "novanews",
+  "version": "1.0.0",
+  "description": "NovaNews - Báo Điện Tử Hiện Đại",
+  "main": "index.js",
+  "scripts": {
+    "start": "echo \"Pure static site with serverless API\" && exit 0"
+  },
+  "dependencies": {}
+}

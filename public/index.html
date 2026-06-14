@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NovaNews — Báo Điện Tử Hiện Đại</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== OVERLAY / MODAL BACKDROP ===== -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-top">
+      <div class="header-date" id="headerDate"></div>
+      <div class="header-ticker" id="breakingTicker">
+        <span class="ticker-label">NÓNG</span>
+        <span class="ticker-text" id="tickerText">Đang tải tin tức mới nhất...</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="searchToggle" title="Tìm kiếm">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+        <div class="auth-area" id="authArea">
+          <button class="btn-auth" id="btnOpenLogin">Đăng nhập</button>
+          <button class="btn-auth btn-register" id="btnOpenRegister">Đăng ký</button>
+        </div>
+        <div class="user-area hidden" id="userArea">
+          <div class="user-info-compact" id="userCompact">
+            <span class="user-avatar" id="userAvatarInitial">U</span>
+            <span class="user-name-short" id="userNameShort">User</span>
+          </div>
+          <button class="btn-icon btn-wallet" id="btnOpenWallet" title="Ví tiền">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M16 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M22 9H16"/></svg>
+            <span class="wallet-badge" id="walletBadge">0đ</span>
+          </button>
+          <button class="btn-icon hidden" id="btnOpenAdmin" title="Bảng Quản Trị" style="color: var(--primary);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </button>
+          <button class="btn-icon" id="btnLogout" title="Đăng xuất">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-main">
+      <div class="logo-wrap">
+        <a href="#" class="logo">Nova<span>News</span></a>
+        <div class="logo-tagline">Tin tức nhanh — Chính xác — Toàn cầu</div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar hidden" id="searchBar">
+      <div class="search-inner">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm bài viết..." />
+        <button id="searchBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Nav -->
+    <nav class="category-nav">
+      <div class="nav-inner">
+        <button class="cat-btn active" data-cat="general">Tổng hợp</button>
+        <button class="cat-btn" data-cat="world">Thế giới</button>
+        <button class="cat-btn" data-cat="technology">Công nghệ</button>
+        <button class="cat-btn" data-cat="business">Kinh doanh</button>
+        <button class="cat-btn" data-cat="sports">Thể thao</button>
+        <button class="cat-btn" data-cat="entertainment">Giải trí</button>
+        <button class="cat-btn" data-cat="health">Sức khỏe</button>
+        <button class="cat-btn" data-cat="science">Khoa học</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="site-main">
+
+    <!-- Hero Section (Featured News) -->
+    <section class="hero-section" id="heroSection">
+      <div class="hero-inner">
+        <div class="hero-main" id="heroMain">
+          <!-- Featured article injected by JS -->
+          <div class="hero-skeleton">
+            <div class="skeleton-img"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+          </div>
+        </div>
+        <div class="hero-sidebar" id="heroSidebar">
+          <!-- Secondary articles injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- News Grid -->
+    <section class="news-section">
+      <div class="section-header">
+        <h2 class="section-title" id="sectionTitle">Tin Mới Nhất</h2>
+        <div class="section-meta">
+          <span class="article-count" id="articleCount">Đang tải...</span>
+          <div class="view-toggle">
+            <button class="view-btn active" id="viewGrid" title="Lưới">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-btn" id="viewList" title="Danh sách">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="5" width="18" height="2"/><rect x="3" y="11" width="18" height="2"/><rect x="3" y="17" width="18" height="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="news-grid" id="newsGrid">
+        <!-- Articles injected by JS -->
+        <div class="loading-state" id="loadingState">
+          <div class="loading-spinner"></div>
+          <p>Đang tải tin tức...</p>
+        </div>
+      </div>
+
+      <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+        <button class="btn-load-more" id="btnLoadMore">Xem thêm bài viết</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== ARTICLE DETAIL MODAL ===== -->
+  <div class="modal article-modal hidden" id="articleModal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <button class="btn-close" id="closeArticleModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="modal-header-actions">
+          <button class="btn-translate" id="btnTranslate">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+            Dịch sang Tiếng Việt
+          </button>
+          <div class="read-timer" id="readTimer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="timerCount">0</span>s
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body" id="articleModalBody">
+        <!-- Article content injected by JS -->
+      </div>
+
+      <div class="modal-footer">
+        <div class="point-earned hidden" id="pointEarned">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color:var(--gold)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          +<span id="pointsEarnedCount">5</span> điểm thưởng đã được cộng!
+        </div>
+        <a class="btn-read-full" id="btnReadFull" href="#" target="_blank" rel="noopener">Đọc bài đầy đủ ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LOGIN MODAL ===== -->
+  <div class="modal auth-modal hidden" id="loginModal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h2>Đăng Nhập</h2>
+        <button class="btn-close" id="closeLoginModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-logo">Nova<span>News</span></div>
+        <p class="auth-sub">Đăng nhập để tích điểm và quản lý ví tiền</p>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="email@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <div class="input-pw-wrap">
+            <input type="password" id="loginPassword" placeholder="••••••••" />
+            <button class="toggle-pw" data-target="loginPassword">👁</button>
+          </div>
+        </div>
+        <div class="form-error hidden" id="loginError"></div>
+        <button class="btn-primary full" id="btnLogin">Đăng Nhập</button>
+        <div class="auth-divider"><span>hoặc</span></div>
+        <button class="btn-google" id="btnGoogleLogin">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Đăng nhập với Google
+        </button>
+        <p class="auth-switch">Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REGISTER MODAL ===== -->
+  <div class="modal auth-modal hidden" id="registerModal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h2>Đăng Ký</h2>
+        <button class="btn-close" id="closeRegisterModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-logo">Nova<span>News</span></div>
+        <p class="auth-sub">Tạo tài khoản để nhận điểm thưởng mỗi ngày</p>
+        <div class="form-group">
+          <label>Họ và Tên</label>
+          <input type="text" id="registerName" placeholder="Nguyễn Văn A" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="registerEmail" placeholder="email@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <div class="input-pw-wrap">
+            <input type="password" id="registerPassword" placeholder="Tối thiểu 6 ký tự" />
+            <button class="toggle-pw" data-target="registerPassword">👁</button>
+          </div>
+        </div>
+        <div class="form-error hidden" id="registerError"></div>
+        <button class="btn-primary full" id="btnRegister">Tạo Tài Khoản</button>
+        <p class="auth-switch">Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WALLET MODAL ===== -->
+  <div class="modal wallet-modal hidden" id="walletModal">
+    <div class="modal-inner">
+      <div class="modal-header">
+        <h2>💰 Ví Điện Tử</h2>
+        <button class="btn-close" id="closeWalletModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Balance Cards -->
+        <div class="balance-cards">
+          <div class="balance-card card-money">
+            <div class="balance-label">Số dư</div>
+            <div class="balance-value" id="walletBalance">0 ₫</div>
+          </div>
+          <div class="balance-card card-points">
+            <div class="balance-label">Điểm thưởng</div>
+            <div class="balance-value" id="walletPoints">0 ✦</div>
+          </div>
+        </div>
+
+        <!-- Wallet Tabs -->
+        <div class="wallet-tabs">
+          <button class="wallet-tab active" data-tab="exchange">Đổi điểm</button>
+          <button class="wallet-tab" data-tab="deposit">Nạp tiền</button>
+          <button class="wallet-tab" data-tab="withdraw">Rút / Chuyển</button>
+          <button class="wallet-tab" data-tab="history">Lịch sử</button>
+        </div>
+
+        <!-- Tab: Đổi điểm -->
+        <div class="wallet-tab-content active" id="tab-exchange">
+          <div class="exchange-info">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Tỉ lệ: <strong>1.000 điểm = 10.000 ₫</strong>
+          </div>
+          <div class="form-group">
+            <label>Số điểm muốn đổi</label>
+            <input type="number" id="exchangePoints" placeholder="Nhập số điểm (tối thiểu 1000)" min="1000" step="1000" />
+          </div>
+          <div class="exchange-preview" id="exchangePreview">
+            → Nhận được: <strong id="exchangeResult">0 ₫</strong>
+          </div>
+          <button class="btn-primary full" id="btnExchange">Đổi Ngay</button>
+          <div class="form-success hidden" id="exchangeSuccess"></div>
+          <div class="form-error hidden" id="exchangeError"></div>
+        </div>
+
+        <!-- Tab: Nạp tiền -->
+        <div class="wallet-tab-content hidden" id="tab-deposit">
+          <div class="deposit-info">
+            <h3>Thông tin chuyển khoản</h3>
+            <div class="bank-info-card">
+              <div class="bank-row">
+                <span>Ngân hàng</span>
+                <strong>Vietcombank</strong>
+              </div>
+              <div class="bank-row">
+                <span>Số tài khoản</span>
+                <strong class="copyable" id="bankAccount">1234567890</strong>
+                <button class="btn-copy" data-copy="1234567890">Sao chép</button>
+              </div>
+              <div class="bank-row">
+                <span>Chủ tài khoản</span>
+                <strong>NOVANEWS ADMIN</strong>
+              </div>
+              <div class="bank-row">
+                <span>Nội dung CK</span>
+                <strong class="copyable" id="depositRef">NOVANEWS [EMAIL CỦA BẠN]</strong>
+                <button class="btn-copy" data-copy-dynamic="depositRef">Sao chép</button>
+              </div>
+            </div>
+            <div class="deposit-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Sau khi chuyển khoản, số dư sẽ được cập nhật trong vòng 24 giờ làm việc. Vui lòng giữ biên lai giao dịch.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Rút / Chuyển -->
+        <div class="wallet-tab-content hidden" id="tab-withdraw">
+          <div class="form-group">
+            <label>Ngân hàng</label>
+            <input type="text" id="withdrawBank" placeholder="Vietcombank, Techcombank..." />
+          </div>
+          <div class="form-group">
+            <label>Số tài khoản thụ hưởng</label>
+            <input type="text" id="withdrawAccount" placeholder="Số tài khoản của bạn" />
+          </div>
+          <div class="form-group">
+            <label>Tên chủ tài khoản</label>
+            <input type="text" id="withdrawName" placeholder="NGUYEN VAN A" />
+          </div>
+          <div class="form-group">
+            <label>Số tiền rút (₫)</label>
+            <input type="number" id="withdrawAmount" placeholder="Tối thiểu 50.000 ₫" min="50000" step="10000" />
+          </div>
+          <button class="btn-primary full" id="btnWithdraw">Gửi Yêu Cầu Rút Tiền</button>
+          <div class="form-success hidden" id="withdrawSuccess"></div>
+          <div class="form-error hidden" id="withdrawError"></div>
+        </div>
+
+        <!-- Tab: Lịch sử -->
+        <div class="wallet-tab-content hidden" id="tab-history">
+          <div class="tx-list" id="txList">
+            <div class="tx-empty">Chưa có giao dịch nào</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN MODAL ===== -->
+  <div class="modal admin-modal hidden" id="adminModal">
+    <div class="modal-inner" style="max-width: 800px; width: 90%;">
+      <div class="modal-header">
+        <h2>Bảng Quản Trị Hệ Thống</h2>
+        <button class="btn-close" id="closeAdminModal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="auth-sub" style="text-align: left; margin-bottom: 20px;">Quản lý người dùng và số dư (Admin)</p>
+        
+        <div class="table-responsive">
+          <table class="admin-table" id="adminUsersTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Tên người dùng</th>
+                <th>Vai trò</th>
+                <th>Số dư</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="adminUsersList">
+              <tr><td colspan="5" style="text-align: center;">Đang tải dữ liệu...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">Nova<span>News</span></div>
+        <p>Nền tảng tin tức hiện đại với hệ thống tích điểm thưởng độc quyền.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Chuyên mục</h4>
+          <a href="#">Thế giới</a>
+          <a href="#">Công nghệ</a>
+          <a href="#">Kinh doanh</a>
+          <a href="#">Thể thao</a>
+        </div>
+        <div class="footer-col">
+          <h4>Tài khoản</h4>
+          <a href="#" id="footerLogin">Đăng nhập</a>
+          <a href="#" id="footerRegister">Đăng ký</a>
+          <a href="#" id="footerWallet">Ví điện tử</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 NovaNews. Bảo lưu mọi quyền.</p>
+    </div>
+  </footer>
+
+</div><!-- ======================================== -->
+<!-- AI CHATBOT WIDGET - Thêm vào cuối <body> -->
+<!-- ======================================== -->
+
+<!-- Nút mở chat (bong bóng nổi góc dưới phải) -->
+<button class="chat-fab" id="chatFab" aria-label="Mở trợ lý AI">
+  <svg class="chat-fab__icon chat-fab__icon--open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <svg class="chat-fab__icon chat-fab__icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<!-- Khung chat chính -->
+<div class="chat-widget" id="chatWidget" aria-label="Cửa sổ trò chuyện AI" role="dialog">
+  <!-- Header -->
+  <div class="chat-widget__header">
+    <div class="chat-widget__header-info">
+      <div class="chat-widget__avatar">AI</div>
+      <div>
+        <p class="chat-widget__name">Trợ lý Báo Điện Tử</p>
+        <p class="chat-widget__status">
+          <span class="chat-widget__status-dot"></span>Trực tuyến
+        </p>
+      </div>
+    </div>
+    <button class="chat-widget__close-btn" id="chatCloseBtn" aria-label="Đóng cửa sổ chat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Vùng hiển thị tin nhắn -->
+  <div class="chat-widget__messages" id="chatMessages">
+    <!-- Tin nhắn chào mừng mặc định -->
+    <div class="chat-message chat-message--ai">
+      <div class="chat-message__bubble">
+        Xin chào! Tôi là trợ lý AI của trang báo. Bạn cần giải thích thêm về bài viết nào, hay muốn hỏi điều gì không? 😊
+      </div>
+      <span class="chat-message__time" id="welcomeTime"></span>
+    </div>
+  </div>
+
+  <!-- Footer: ô nhập liệu -->
+  <div class="chat-widget__footer">
+    <input
+      type="text"
+      class="chat-widget__input"
+      id="chatInput"
+      placeholder="Nhập câu hỏi của bạn..."
+      autocomplete="off"
+      aria-label="Nhập tin  nhắn"
+      maxlength="500"
+    />
+    <button class="chat-widget__send-btn" id="chatSendBtn" aria-label="Gửi tin nhắn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <line x1="22" y1="2" x2="11" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
